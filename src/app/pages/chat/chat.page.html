@@ -1,12 +1,50 @@
-<ion-header>
-  <ion-toolbar>
+<ion-header >
+  <ion-toolbar color="light">
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Chat</ion-title>
+    <ion-title>Assistent</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content [fullscreen]="true">
+  <div class="messages">
+    <div class="messages-content">
+      <div class="message new">
+        <img class="avatar" src="assets/images/bot-avatar.png">
+        Hi
+        <div class="timestamp">11:09</div>
+      </div>
+      <div class="message message-personal new">
+        Hi
+        <div class="timestamp">11:10</div></div>
+      <div class="message message-personal new">
+        How are you?
+        <div class="timestamp">11:52</div>
+      </div>
+      <div class="message new">
+        <img class="avatar" src="assets/images/bot-avatar.png">
+        Nice to meet you<div class="timestamp">11:53</div>
+      </div>
+      <div class="message new">
+        <img class="avatar" src="assets/images/bot-avatar.png">
+        How are you?
+        <div class="timestamp">11:53</div></div>
+      <div class="message loading">
+        <img class="avatar" src="assets/images/bot-avatar.png">
+        <span><i></i><i></i><i></i></span>
+      </div>
+    </div>
+  </div>
 </ion-content>
+
+<ion-footer translucent="true">
+  <ion-toolbar>
+    <ion-textarea rows="1" autocapitalize="on">
+
+    </ion-textarea>
+    <ion-buttons slot="end">
+      <ion-icon slot="icon-only" name="send-outline" color="light"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
