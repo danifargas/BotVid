@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,29 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  loggedIn: boolean;
+
+  constructor(
+    private auth: AuthService
+  ) {}
+
+
+  ngOnInit(){
+
+    this.auth.user.subscribe((res) => {
+      console.log(res);
+      this.loggedIn = res!=null;
+    })
+
+    //this.auth.signup("danifargas@outlook.com", "123456");
+  }
+
+  login(){
+    this.auth.login("danifargas@outlook.com", "123456");
+  }
+
+  logout() {
+    this.auth.logout();
+  }
 
 }

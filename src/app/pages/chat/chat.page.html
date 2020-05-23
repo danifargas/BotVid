@@ -40,11 +40,13 @@
 
 <ion-footer translucent="true">
   <ion-toolbar>
-    <ion-textarea rows="1" autocapitalize="on">
+    <ion-textarea rows="1" autocapitalize="on"  [(ngModel)]="textInput">
 
     </ion-textarea>
     <ion-buttons slot="end">
-      <ion-icon slot="icon-only" name="send-outline" color="light"></ion-icon>
+      <ion-button (click)="sendMessage()">
+        <ion-icon slot="icon-only" name="send-outline" color="light"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-footer>
