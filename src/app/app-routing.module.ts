@@ -14,7 +14,11 @@ const routes: Routes = [
   {
     path: 'chat',
     loadChildren: () => import('./pages/chat/chat.module').then( m => m.ChatPageModule)
+  },  {
+    path: 'sing-in',
+    loadChildren: () => import('./pages/sing-in/sing-in.module').then( m => m.SingInPageModule)
   },
+
 ];
 
 @NgModule({
