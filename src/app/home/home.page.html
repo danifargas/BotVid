@@ -4,5 +4,10 @@
       BotVid
     </div>
   </div>
-  <ion-button shape="round" fill="outline" color="light" [routerLink]="['/chat']">Entrar a l'assistent</ion-button>
+  <div>
+    <ion-button shape="round" fill="outline" color="light" [routerLink]="['/chat']">Entrar a l'assistent</ion-button>
+  </div>
+  
+  <ion-button shape="round" fill="outline" color="light" (click)="login()" *ngIf="!loggedIn">Login</ion-button>
+  <ion-button shape="round" fill="outline" color="light" (click)="logout()" *ngIf="loggedIn">Log out</ion-button>
 </ion-content>
