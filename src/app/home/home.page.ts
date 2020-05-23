@@ -29,6 +29,10 @@ export class HomePage {
     this.auth.login("danifargas@outlook.com", "123456");
   }
 
+  loginGoogle(){
+    this.auth.loginGoogle();
+  }
+
   logout() {
     this.auth.logout();
   }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { auth } from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,15 @@ export class AuthService {
       .catch(err => {
         console.log('Something went wrong:',err.message);
       });
+  }
+
+  loginGoogle(){
+    this.firebaseAuth.signInWithPopup(new auth.GoogleAuthProvider()).then(value => {
+      console.log('Nice, it worked!');
+    })
+    .catch(err => {
+      console.log('Something went wrong:',err.message);
+    });
   }
 
   logout() {
