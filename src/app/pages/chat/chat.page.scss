@@ -127,6 +127,15 @@ ion-footer{
             color: white;
         }
     }
+
+    .record-counter{
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        color: red;
+        padding-top: 20px;
+        font-size: 1.2em;
+    }
     
 }
 

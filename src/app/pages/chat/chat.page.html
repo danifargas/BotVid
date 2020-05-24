@@ -39,12 +39,18 @@
 </ion-content>
 
 <ion-footer translucent="true">
+  <div class="record-counter" *ngIf="recording">
+    {{counter}}
+  </div>
   <ion-toolbar>
     <ion-textarea rows="1" autocapitalize="on"  [(ngModel)]="textInput">
 
     </ion-textarea>
     <ion-buttons slot="end">
-      <ion-button (click)="sendMessage()">
+      <ion-button (click)="recordAudio()" *ngIf="!(textInput && textInput.length)">
+        <ion-icon slot="icon-only" name="mic-circle-outline" color="light"></ion-icon>
+      </ion-button>
+      <ion-button (click)="sendMessage()" *ngIf="textInput && textInput.length">
         <ion-icon slot="icon-only" name="send-outline" color="light"></ion-icon>
       </ion-button>
     </ion-buttons>

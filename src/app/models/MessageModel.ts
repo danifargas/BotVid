@@ -1,5 +1,7 @@
 export class MessageModel {
     $key?: string;
     message: string;
-    datetime: string;
+    datetime: any;
+    isBot: boolean;
+    loading?: boolean;
 }
