@@ -6,7 +6,6 @@ import { Media, MediaObject } from '@ionic-native/media/ngx';
 import { File } from '@ionic-native/file/ngx';
 import * as moment from 'moment';
 import { MessageModel } from 'src/app/models/MessageModel';
-import { isAbsolute } from 'path';
 
 @Component({
   selector: 'app-chat',
@@ -18,7 +17,7 @@ export class ChatPage implements OnInit {
   userUID: string;
 
   textInput: any;
-  chats: Array<any>;
+  public messages: Array<MessageModel>;
 
   recording: boolean;
   recordingFileName: string;
@@ -26,34 +25,6 @@ export class ChatPage implements OnInit {
 
   timer: any;
   counter: string;
-
-  //#region test
-  public messages: Array<MessageModel> = [
-    {
-      message: 'Message 1',
-      datetime: '08/05/2020',
-      isBot: false
-    },
-    {
-      message: 'Message 2',
-      datetime: '10/05/2020',
-      isBot: true
-    },
-    {
-      message: 'Message 1',
-      datetime: '19/05/2020',
-      isBot: false
-    },
-    {
-      message: 'Message 2',
-      datetime: '15/05/2020',
-      isBot: true
-    }
-  ];
-
-  public currentUser = 'Message 1';
-
-  //#endregion
 
   constructor(
     private messageService: MessagesService,
@@ -70,8 +41,8 @@ export class ChatPage implements OnInit {
         this.userUID = u.uid;
         this.messageService.getMessages(u.uid).subscribe((res) => {
           let data: any = res.payload.data()
-          this.chats = data.messages;
-          console.log(this.chats);
+          this.messages = data.messages;
+          console.log(this.messages);
         });
       }
     });
@@ -80,13 +51,18 @@ export class ChatPage implements OnInit {
 
 
   sendMessage() {
-    this.messageService.sendMessage(this.userUID, {
+    var model: MessageModel =  {
       message: this.textInput,
       datetime: new Date().toISOString(),
-      isBot: false
-    });
+      isBot: false,
+      isNew: true
+    };
 
+    this.messageService.sendMessage(this.userUID, model);
     this.textInput = "";
+
+    this.messages.push(model)
+    this.pushBotLoading();
   }
   /*
     recordAudio(){
@@ -126,6 +102,7 @@ export class ChatPage implements OnInit {
     this.file.readAsDataURL(this.file.dataDirectory, this.recordingFileName).then((base64File) => {
       console.log(base64File);
       let recordedAudio = base64File;
+      this.pushBotLoading();
     }).catch((error) => { console.log("file error", error) })
   }
 
@@ -138,6 +115,15 @@ export class ChatPage implements OnInit {
       this.counter = moment().startOf('day').seconds(s).format('mm:ss');
     }, 1000);
 
+  }
+
+  pushBotLoading(){
+    this.messages.push({
+      message: "",
+      datetime: new Date().toISOString(),
+      isLoading: true,
+      isBot: true,
+    });
   }
 
 }

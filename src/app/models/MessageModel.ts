@@ -3,5 +3,6 @@ export class MessageModel {
     message: string;
     datetime: any;
     isBot: boolean;
-    loading?: boolean;
+    isLoading?: boolean;
+    isNew?: boolean;
 }
