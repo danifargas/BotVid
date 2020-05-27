@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <form #formulariLogin="ngForm" (ngSubmit)="doLogin()">
+      <ion-list>
+        <ion-item>
+          <ion-label position="floating"> Mail </ion-label>
+          <ion-input type="email" required
+                      name="email"
+                      [(ngModel)]="usuari.correu"
+                      pattern="^([a-zA-Z0-9._%+-])+@([a-zA-Z0-9.-]+)\.([a-zA-Z]{2,5})$"
+                      (ionChange)="changeInputs()">
+          </ion-input> 
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating"> Password </ion-label>
+           <ion-input type="password" required
+                      name="password"
+                      [(ngModel)]="usuari.contrassenya"
+                      (ionChange)="changeInputs()">
+          </ion-input> 
+        </ion-item>
+      </ion-list>
+
+      <ion-button class="login" shape="round" fill="outline" color="light" *ngIf="!loggedIn" type="submit">
+        LOGIN
+      </ion-button>
+
+  </form>
+
+  <div class="ion-text-center">
+  <ion-button class="google" shape="round" (click)="loginGoogle()" *ngIf="!loggedIn"> LOGIN WITH &nbsp;
+    <ion-icon name="logo-google"></ion-icon>
+  </ion-button>
+</div>
+
+
+</ion-content>

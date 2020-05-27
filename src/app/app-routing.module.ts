@@ -14,9 +14,14 @@ const routes: Routes = [
   {
     path: 'chat',
     loadChildren: () => import('./pages/chat/chat.module').then( m => m.ChatPageModule)
-  },  {
+  },
+  {
     path: 'sing-in',
     loadChildren: () => import('./pages/sing-in/sing-in.module').then( m => m.SingInPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login/login.module').then( m => m.LoginPageModule)
   },
 
 ];
