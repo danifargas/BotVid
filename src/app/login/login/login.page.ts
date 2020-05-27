@@ -29,19 +29,8 @@ export class LoginPage implements OnInit {
 
   }
 
-  /*doLogin(){
-    this.loginService.doLogin(this.usuari).subscribe((res: LoginResponse) => {
-      if (!res.doLogin){
-        this.showMsgInvalidLogin = true;
-      }else{
-        this.showMsgInvalidLogin = false;
-        this.updateStoredLogin(res.idUsuari);
-      }
-    });
-  }*/
-
   login(){
-    this.auth.login("danifargas@outlook.com", "123456");
+    this.auth.login(this.usuari.correu, this.usuari.contrassenya);
   }
 
   loginGoogle(){
