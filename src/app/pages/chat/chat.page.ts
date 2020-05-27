@@ -6,6 +6,8 @@ import { Media, MediaObject } from '@ionic-native/media/ngx';
 import { File } from '@ionic-native/file/ngx';
 import * as moment from 'moment';
 import { MessageModel } from 'src/app/models/MessageModel';
+import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-chat',
@@ -32,6 +34,8 @@ export class ChatPage implements OnInit {
     private mediaCapture: MediaCapture,
     private media: Media,
     private file: File,
+    private router: Router,
+    private nav: NavController
   ) {
   }
 
@@ -39,10 +43,12 @@ export class ChatPage implements OnInit {
     this.auth.user.subscribe(u => {
       if (u) {
         this.userUID = u.uid;
-        this.messageService.getMessages(u.uid).subscribe((res) => {
-          let data: any = res.payload.data()
-          this.messages = data.messages;
-          console.log(this.messages);
+        this.messageService.getMessages(u.uid).then((querySnapshot) => {
+          let messagesTMP = [];
+          querySnapshot.forEach((doc: any) => {
+              messagesTMP.push(doc.data());
+          });
+          this.messages = messagesTMP.sort(x=>x.datetime);
         });
       }
     });
@@ -51,18 +57,40 @@ export class ChatPage implements OnInit {
 
 
   sendMessage() {
-    var model: MessageModel =  {
+    var userMsg: MessageModel =  {
       message: this.textInput,
       datetime: new Date().toISOString(),
       isBot: false,
       isNew: true
     };
+    this.messages.push(userMsg);
 
-    this.messageService.sendMessage(this.userUID, model);
+    var bot = {
+      message: "",
+      datetime: new Date().toISOString(),
+      isLoading: true,
+      isBot: true,
+      isNew: true
+    };
+    this.messages.push(bot);
+
+    this.messageService.sendMessage(this.userUID, userMsg).subscribe((res: any) =>{ 
+      bot.message = res.fulfillmentMessages[0].text.text[0];
+      bot.isLoading = false;
+
+      res.fulfillmentMessages.forEach((element, index) => {
+        if(!index) return;
+        this.messages.push({
+          message: element.text.text[0],
+          datetime: new Date().toISOString(),
+          isLoading: false,
+          isBot: true,
+        });
+      });
+    });
+    
+    
     this.textInput = "";
-
-    this.messages.push(model)
-    this.pushBotLoading();
   }
   /*
     recordAudio(){
@@ -79,7 +107,7 @@ export class ChatPage implements OnInit {
       return;
     }
 
-    this.recordingFileName = moment().format('YYYYMMDD_HHmm_ss') + '.3gp';
+    this.recordingFileName = moment().format('YYYYMMDD_HHmm_ss') + '.aac';
     console.log(this.file.dataDirectory + this.recordingFileName);
 
     this.audioFile = this.media.create(this.file.dataDirectory + this.recordingFileName);
@@ -101,8 +129,10 @@ export class ChatPage implements OnInit {
 
     this.file.readAsDataURL(this.file.dataDirectory, this.recordingFileName).then((base64File) => {
       console.log(base64File);
-      let recordedAudio = base64File;
-      this.pushBotLoading();
+      let recordedAudio = base64File.split(',')[1];
+      this.messageService.sendAudio(this.userUID, recordedAudio).subscribe((res: any) => {
+
+      });
     }).catch((error) => { console.log("file error", error) })
   }
 
@@ -117,13 +147,14 @@ export class ChatPage implements OnInit {
 
   }
 
-  pushBotLoading(){
-    this.messages.push({
-      message: "",
-      datetime: new Date().toISOString(),
-      isLoading: true,
-      isBot: true,
-    });
+  logout() {
+    this.auth.logout()
+      .then(value => {
+        this.nav.navigateBack('login');
+      })
+      .catch(err => {
+        console.error('Something went wrong:',err.message);
+      });
   }
 
 }

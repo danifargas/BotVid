@@ -5,4 +5,5 @@ export class MessageModel {
     isBot: boolean;
     isLoading?: boolean;
     isNew?: boolean;
+    user?: string;
 }

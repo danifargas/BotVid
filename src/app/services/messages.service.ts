@@ -28,17 +28,33 @@ export class MessagesService {
   }
 */
   sendMessage(uid: string, model: MessageModel) {
-    const data = new FormData();
-    data.append("queryInput", model.message);
-    data.append("sessionId", uid);
-    this.http.post('https://us-central1-botvid-48dc1.cloudfunctions.net/dialogflowGateway', data).subscribe((res) => {
-      console.log(res);
-    });
+    
+    const data = {
+      "queryInput": {
+          "text": {
+              "text": model.message,
+              "languageCode": "es-ES"
+          }
+        },
+        "sessionId": uid
+    };
 
+    return this.http.post('https://us-central1-botvid-48dc1.cloudfunctions.net/textMessage', data);
   }
+
   // Get List
   getMessages(uid: string) {
-    return this.db.collection(`users`).doc(uid).snapshotChanges();
+    return this.db.collection(`users/${uid}/messages`).ref.orderBy('datetime').get();
+  }
+
+  sendAudio(uid: string, base64: string) {
+    
+    const data = {
+      audioBytes: base64,
+      sessionId: uid
+  }
+
+    return this.http.post('https://us-central1-botvid-48dc1.cloudfunctions.net/audioMessage', data);
   }
 
 }

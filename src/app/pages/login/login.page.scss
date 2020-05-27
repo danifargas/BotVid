@@ -1,0 +1,33 @@
+ion-content{
+  --background: linear-gradient(to top, #96DEDA, #50C9C3);
+  text-align: center;
+
+  .half{
+    height: 50vh;
+    padding-top: 10vh;
+    .logo{
+      height: 20vh;
+    }
+    .title{
+        font-size: 3em;
+        color: white;
+      }
+  }
+}
+ 
+ion-item {
+  --background: rgb(183, 224, 222) !important;
+  opacity:1;
+}
+
+.login {
+  margin-top: 17px;
+}
+.google {
+  --background: #DB4437;
+  margin-top: 14px;
+}
+
+hr{
+margin-top: 20px;
+}

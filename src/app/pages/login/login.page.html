@@ -1,0 +1,42 @@
+<ion-content [fullscreen]="true">
+
+  <div class="half">
+    <img class="logo" src="assets/images/logo.svg"/>
+    <div class="title">
+      BotVid
+    </div>
+  </div>
+
+    <form #formulariLogin="ngForm" (ngSubmit)="login()" class="ion-padding">
+      <ion-item>
+        <ion-label position="floating"> Email </ion-label>
+        <ion-input type="email" required
+                    name="email"
+                    [(ngModel)]="usuari.correu"
+                    pattern="^([a-zA-Z0-9._%+-])+@([a-zA-Z0-9.-]+)\.([a-zA-Z]{2,5})$"
+                    >
+        </ion-input> 
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating"> Contraseña </ion-label>
+         <ion-input type="password" required
+                    name="password"
+                    [(ngModel)]="usuari.contrassenya"
+                    >
+        </ion-input> 
+      </ion-item>
+      <ion-button class="login" shape="round" fill="outline" color="light" type="submit">
+        Entrar
+      </ion-button>
+  </form>
+
+  <hr>
+
+  <div class="ion-text-center">
+  <ion-button class="google" shape="round" (click)="loginGoogle()"> Entrar con &nbsp;
+    <ion-icon name="logo-google"></ion-icon>
+  </ion-button>
+</div>
+
+
+</ion-content>
