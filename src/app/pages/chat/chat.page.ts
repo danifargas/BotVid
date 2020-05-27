@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture/ngx';
 import { Media, MediaObject } from '@ionic-native/media/ngx';
 import { File } from '@ionic-native/file/ngx';
-import * as moment from 'moment';
+ import * as moment from 'moment';
 
 @Component({
   selector: 'app-chat',
@@ -43,6 +43,7 @@ export class ChatPage implements OnInit {
           let data:any = res.payload.data()
           this.chats = data.messages;
           console.log(this.chats);
+          console.log(this.userUID);
         });
       }
       
