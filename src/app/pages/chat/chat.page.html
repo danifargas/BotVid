@@ -1,4 +1,4 @@
-<ion-header >
+<ion-header>
   <ion-toolbar color="light">
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
@@ -10,14 +10,14 @@
 <ion-content [fullscreen]="true">
   <div class="messages">
     <div class="messages-content">
-      <div class="message new">
+      <!--<div class="message new">
         <img class="avatar" src="assets/images/bot-avatar.png">
-        Hi
         <div class="timestamp">11:09</div>
       </div>
-      <div class="message message-personal new">
+       <div class="message message-personal new">
         Hi
-        <div class="timestamp">11:10</div></div>
+        <div class="timestamp">11:10</div>
+      </div>
       <div class="message message-personal new">
         How are you?
         <div class="timestamp">11:52</div>
@@ -29,7 +29,18 @@
       <div class="message new">
         <img class="avatar" src="assets/images/bot-avatar.png">
         How are you?
-        <div class="timestamp">11:53</div></div>
+        <div class="timestamp">11:53</div>
+      </div> -->
+      <ion-row *ngFor="let message of messages">
+        <ion-col class="message new" *ngIf="currentUser !== message.message">
+          <b>{{message.message}}</b>
+          <div class="timestamp">{{message.datetime}}</div>
+        </ion-col>
+        <ion-col class="message message-personal new" *ngIf="currentUser === message.message">
+          <b>{{message.message}}</b>
+          <div class="timestamp">{{message.datetime}}</div>
+        </ion-col>
+      </ion-row>
       <div class="message loading">
         <img class="avatar" src="assets/images/bot-avatar.png">
         <span><i></i><i></i><i></i></span>
@@ -43,7 +54,7 @@
     {{counter}}
   </div>
   <ion-toolbar>
-    <ion-textarea rows="1" autocapitalize="on"  [(ngModel)]="textInput">
+    <ion-textarea rows="1" autocapitalize="on" [(ngModel)]="textInput">
 
     </ion-textarea>
     <ion-buttons slot="end">
