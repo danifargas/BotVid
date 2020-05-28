@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { MessageModel } from 'src/app/models/MessageModel';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { SpeechRecognition } from '@ionic-native/speech-recognition/ngx';
 
 @Component({
   selector: 'app-chat',
@@ -35,7 +36,8 @@ export class ChatPage implements OnInit {
     private media: Media,
     private file: File,
     private router: Router,
-    private nav: NavController
+    private nav: NavController,
+    private speechRecognition: SpeechRecognition
   ) {
   }
 
@@ -49,6 +51,7 @@ export class ChatPage implements OnInit {
               messagesTMP.push(doc.data());
           });
           this.messages = messagesTMP.sort(x=>x.datetime);
+          console.log(this.messages);
         });
       }
     });
@@ -56,23 +59,31 @@ export class ChatPage implements OnInit {
   }
 
 
-  sendMessage() {
+  sendTextMessage() {
+    this.sendMessage(this.textInput)
+    this.textInput = "";
+  }
+
+  sendMessage(text){
     var userMsg: MessageModel =  {
-      message: this.textInput,
+      message: text,
       datetime: new Date().toISOString(),
       isBot: false,
       isNew: true
     };
     this.messages.push(userMsg);
-
-    var bot = {
-      message: "",
-      datetime: new Date().toISOString(),
-      isLoading: true,
-      isBot: true,
-      isNew: true
-    };
-    this.messages.push(bot);
+    
+    var bot;
+    setTimeout(() => {
+      bot = {
+        message: "",
+        datetime: new Date().toISOString(),
+        isLoading: true,
+        isBot: true,
+        isNew: true
+      };
+      this.messages.push(bot);
+    }, 500);
 
     this.messageService.sendMessage(this.userUID, userMsg).subscribe((res: any) =>{ 
       bot.message = res.fulfillmentMessages[0].text.text[0];
@@ -85,20 +96,11 @@ export class ChatPage implements OnInit {
           datetime: new Date().toISOString(),
           isLoading: false,
           isBot: true,
+          isNew: true
         });
       });
     });
-    
-    
-    this.textInput = "";
   }
-  /*
-    recordAudio(){
-      this.mediaCapture.captureAudio().then((res) =>{
-        console.log(res);
-      })
-    }
-  */
 
   recordAudio() {
 
@@ -139,6 +141,9 @@ export class ChatPage implements OnInit {
   startTimer() {
     let s = 0;
     this.counter = "00:00";
+
+    if(this.timer) clearInterval(this.timer);
+
     this.timer = setInterval(x => {
       s++;
 
@@ -155,6 +160,52 @@ export class ChatPage implements OnInit {
       .catch(err => {
         console.error('Something went wrong:',err.message);
       });
+  }
+
+  startSpeechRecognition(){
+
+    if(this.recording){
+      // Stop the recognition process (iOS only)
+      this.speechRecognition.stopListening();
+      this.recording = false;
+      return;
+    }
+
+    this.speechRecognition.hasPermission()
+    .then((hasPermission: boolean) => {
+      if(!hasPermission){
+        this.speechRecognition.requestPermission()
+        .then(
+          () => {
+            console.log('Granted');
+            this.startSpeechRecognition();
+          },
+          () => console.log('Denied')
+        )
+      }else{
+        this.recording = true;
+        this.startTimer();
+
+        this.speechRecognition.startListening({
+          language: "es-ES",
+          showPopup: false,
+        })
+        .subscribe(
+          (matches: string[]) => {
+            this.recording = false;
+            console.log(matches);
+
+            this.sendMessage(matches[0])
+          },
+          (onerror) => {
+            console.log('error:', onerror);
+            this.recording = false;
+          }
+        )
+      }
+
+    });
+    
   }
 
 }

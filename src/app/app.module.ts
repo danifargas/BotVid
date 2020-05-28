@@ -19,6 +19,7 @@ import { MediaCapture } from '@ionic-native/media-capture/ngx';
 import { Media } from '@ionic-native/media/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { HttpClientModule } from '@angular/common/http';
+import { SpeechRecognition } from '@ionic-native/speech-recognition/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,7 +39,8 @@ import { HttpClientModule } from '@angular/common/http';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     MediaCapture,
     Media,
-    File
+    File,
+    SpeechRecognition
   ],
   bootstrap: [AppComponent]
 })

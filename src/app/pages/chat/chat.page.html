@@ -13,7 +13,7 @@
 <ion-content [fullscreen]="true">
   <div class="messages">
     <div class="messages-content">
-      <div class="message" *ngFor="let message of messages" [class.message-personal]="!message.isBot" [class.loading]="message.isLoading">
+      <div class="message" *ngFor="let message of messages" [class.message-personal]="!message.isBot" [class.loading]="message.isLoading" [class.new]="message.isNew">
         <img class="avatar" src="assets/images/bot-avatar.png" *ngIf="message.isBot">
         {{message.message}}
         <div class="timestamp" *ngIf="!message.isLoading">{{message.datetime | date: 'shortTime' }}</div>
@@ -38,10 +38,10 @@
 
     </ion-textarea>
     <ion-buttons slot="end">
-      <ion-button (click)="recordAudio()" *ngIf="!(textInput && textInput.length)">
+      <ion-button (click)="startSpeechRecognition()" *ngIf="!(textInput && textInput.length)">
         <ion-icon slot="icon-only" name="mic-circle-outline" color="light"></ion-icon>
       </ion-button>
-      <ion-button (click)="sendMessage()" *ngIf="textInput && textInput.length">
+      <ion-button (click)="sendTextMessage()" *ngIf="textInput && textInput.length">
         <ion-icon slot="icon-only" name="send-outline" color="light"></ion-icon>
       </ion-button>
     </ion-buttons>
