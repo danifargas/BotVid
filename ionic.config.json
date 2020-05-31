@@ -1,5 +1,7 @@
 {
   "name": "BotVid",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

@@ -2,7 +2,14 @@
 ion-content{
     --background: linear-gradient(to top, #96DEDA, #50C9C3);
 
-    .messages {        
+    .messages {    
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow:auto; 
+        display:flex; 
+        flex-direction:column-reverse;
+
         .message {
             color: white;
             clear: both;
@@ -19,6 +26,7 @@ ion-content{
             .timestamp {
                 position: absolute;
                 bottom: -15px;
+                left: 8px;
                 font-size: 0.8em;
                 color: rgba(0, 0, 0, .6);
             }
@@ -126,6 +134,15 @@ ion-footer{
         ion-textarea{
             color: white;
         }
+    }
+
+    .record-counter{
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        color: red;
+        padding-top: 20px;
+        font-size: 1.2em;
     }
     
 }

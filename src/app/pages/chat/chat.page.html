@@ -1,50 +1,49 @@
-<ion-header >
+<ion-header>
   <ion-toolbar color="light">
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Assistent</ion-title>
+    <ion-title>BotVid</ion-title>
+    <ion-buttons slot="end" (click)="logout()">
+      <ion-icon name="log-out-outline" color="danger" slot="icon-only"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <div class="messages">
     <div class="messages-content">
-      <div class="message new">
-        <img class="avatar" src="assets/images/bot-avatar.png">
-        Hi
-        <div class="timestamp">11:09</div>
+      <div class="message" *ngFor="let message of messages" [class.message-personal]="!message.isBot" [class.loading]="message.isLoading" [class.new]="message.isNew">
+        <img class="avatar" src="assets/images/bot-avatar.png" *ngIf="message.isBot">
+        {{message.message}}
+        <div class="timestamp" *ngIf="!message.isLoading">{{message.datetime | date: 'shortTime' }}</div>
+        <span *ngIf="message.isLoading"><i></i><i></i><i></i></span>
       </div>
-      <div class="message message-personal new">
-        Hi
-        <div class="timestamp">11:10</div></div>
-      <div class="message message-personal new">
-        How are you?
-        <div class="timestamp">11:52</div>
-      </div>
-      <div class="message new">
-        <img class="avatar" src="assets/images/bot-avatar.png">
-        Nice to meet you<div class="timestamp">11:53</div>
-      </div>
-      <div class="message new">
-        <img class="avatar" src="assets/images/bot-avatar.png">
-        How are you?
-        <div class="timestamp">11:53</div></div>
+      <!--
       <div class="message loading">
         <img class="avatar" src="assets/images/bot-avatar.png">
         <span><i></i><i></i><i></i></span>
       </div>
+      -->
     </div>
   </div>
 </ion-content>
 
 <ion-footer translucent="true">
+  <div class="record-counter" *ngIf="recording">
+    {{counter}}
+  </div>
   <ion-toolbar>
-    <ion-textarea rows="1" autocapitalize="on">
+    <ion-textarea rows="1" autocapitalize="on" [(ngModel)]="textInput">
 
     </ion-textarea>
     <ion-buttons slot="end">
-      <ion-icon slot="icon-only" name="send-outline" color="light"></ion-icon>
+      <ion-button (click)="startSpeechRecognition()" *ngIf="!(textInput && textInput.length)">
+        <ion-icon slot="icon-only" name="mic-circle-outline" color="light"></ion-icon>
+      </ion-button>
+      <ion-button (click)="sendTextMessage()" *ngIf="textInput && textInput.length">
+        <ion-icon slot="icon-only" name="send-outline" color="light"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-footer>
